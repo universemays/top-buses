@@ -1,9 +1,16 @@
 import { Box } from "@chakra-ui/react";
+import Head from "next/head";
 import Hero from "../components/Hero";
 
 export default function Home({ buses }) {
   return (
     <Box>
+      <Head>
+        <title>Stockholm Busses</title>
+        <meta name="description" content="Top 10 Stockholm bus lines" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <Hero
         title={"Top 10 bus lines"}
         subtitle={"in Stockholm"}

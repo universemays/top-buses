@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/buses")
 public class BusController {
 
-    BusService service;
+    private final BusService service;
 
     public BusController(BusService service) {
         this.service = service;
@@ -19,7 +19,6 @@ public class BusController {
     @GetMapping("/top")
     public Iterable<Bus> getTop() {
         service.load();
-
         return service.topJourneyCountBuses(10);
     }
 }

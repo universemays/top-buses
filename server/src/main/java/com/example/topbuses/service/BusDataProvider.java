@@ -1,11 +1,17 @@
 package com.example.topbuses.service;
 
+import com.example.topbuses.execption.NoDataException;
 import com.example.topbuses.model.BusJourneyObject;
 import com.example.topbuses.model.BusStopObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.function.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,6 +19,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class BusDataProvider {
+
+    private final Logger logger = LoggerFactory.getLogger(BusDataProvider.class);
+
+    @Value("${api.key}")
+    private String apiKey;
 
     private final WebClient apiClient;
 
@@ -22,24 +33,41 @@ public class BusDataProvider {
 
     public Mono<List<BusStopObject>> getBusStops() {
         ParameterizedTypeReference<Response<BusStopObject>> typeReference = new ParameterizedTypeReference<>() {};
-        return fetch("stops", typeReference);
+        return fetch("stop", typeReference);
     }
 
     public Mono<List<BusJourneyObject>> getBusJourneys() {
         ParameterizedTypeReference<Response<BusJourneyObject>> typeReference = new ParameterizedTypeReference<>() {};
-        return fetch("journeys", typeReference);
+        return fetch("jour", typeReference);
     }
 
-    private <T> Mono<List<T>> fetch(String uri, ParameterizedTypeReference<Response<T>> typeReference) {
+    private <T> Mono<List<T>> fetch(String model, ParameterizedTypeReference<Response<T>> typeReference) {
         return apiClient
             .get()
-            .uri(uri)
+            .uri(uriBuilder ->
+                uriBuilder
+                    .path("/LineData.json")
+                    .queryParam("key", apiKey)
+                    .queryParam("model", model)
+                    .queryParam("DefaultTransportModeCode", "BUS")
+                    .build()
+            )
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .retrieve()
-            // .bodyToMono(String.class)
+            .onStatus(
+                HttpStatus::isError,
+                response -> response.bodyToMono(String.class).flatMap(error -> Mono.error(new NoDataException(error)))
+            )
             .bodyToMono(typeReference)
             .map(Response::getData)
-            .map(ResponseData::getItems);
+            .map(ResponseData::getItems)
+            .onErrorMap(
+                Predicate.not(NoDataException.class::isInstance),
+                throwable -> new NoDataException("Something went wrong")
+            )
+            .doOnError(throwable -> {
+                logger.error("Could not parse bus data", throwable);
+            });
     }
 
     private static class Response<T> {

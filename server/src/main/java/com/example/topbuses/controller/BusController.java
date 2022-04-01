@@ -18,7 +18,6 @@ public class BusController {
 
     @GetMapping("/top")
     public Iterable<Bus> getTop() {
-        service.load();
         return service.topJourneyCountBuses(10);
     }
 }

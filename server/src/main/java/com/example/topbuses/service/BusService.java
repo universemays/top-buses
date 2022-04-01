@@ -64,4 +64,8 @@ public class BusService {
 
         logger.info("Successfully loaded {} buses", buses.size());
     }
+
+    public List<Bus> topJourneyCountBuses(int numberOfBus) {
+        return buses.subList(0, Math.min(Math.max(numberOfBus, 0), buses.size()));
+    }
 }

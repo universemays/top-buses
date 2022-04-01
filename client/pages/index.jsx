@@ -1,9 +1,14 @@
 import { Box } from "@chakra-ui/react";
+import Error from "next/error";
 import Head from "next/head";
 import BusList from "../components/BusList";
 import Hero from "../components/Hero";
 
 export default function Home({ buses }) {
+  if (!buses || buses.length <= 0) {
+    return <Error statusCode={500} title={"Stockholm Buses 🚌 is not available currently 😕"} />;
+  }
+
   return (
     <Box>
       <Head>
@@ -26,43 +31,7 @@ export default function Home({ buses }) {
 }
 
 export async function getServerSideProps() {
-  const buses = [
-    {
-      number: "1",
-      stops: [
-        {
-          number: "12345",
-          name: "Anywhere",
-        },
-      ],
-    },
-    {
-      number: "2",
-      stops: [
-        {
-          number: "98765",
-          name: "Central Station A",
-        },
-        {
-          number: "98766",
-          name: "Central Station B",
-        },
-      ],
-    },
-    {
-      number: "3",
-      stops: [
-        {
-          number: "23456",
-          name: "Somewhere A",
-        },
-        {
-          number: "23457",
-          name: "Somewhere B",
-        },
-      ],
-    },
-  ];
+  const buses = [];
 
   return {
     props: {

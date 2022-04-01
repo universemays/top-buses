@@ -37,11 +37,12 @@ export async function getServerSideProps() {
   try {
     const response = await axios({
       method: "GET",
-      url: `${process.env.API_URL}/api/buses/top`,
+      url: `${process.env.API_URL}/buses/top`,
     });
 
     buses = response.data;
-  } catch {
+  } catch(error) {
+    // console.error("Error →", error);
     buses = [];
   }
 

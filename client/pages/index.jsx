@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import Head from "next/head";
+import BusList from "../components/BusList";
 import Hero from "../components/Hero";
 
 export default function Home({ buses }) {
@@ -19,7 +20,7 @@ export default function Home({ buses }) {
         }
       />
 
-      <Box>{JSON.stringify({ buses })}</Box>
+      <BusList buses={buses} />
     </Box>
   );
 }

@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import Error from "next/error";
 import Head from "next/head";
-import BusList from "../components/BusList";
+import axios from "axios";
+import Error from "next/error";
 import Hero from "../components/Hero";
+import BusList from "../components/BusList";
 
 export default function Home({ buses }) {
   if (!buses || buses.length <= 0) {
@@ -31,7 +32,18 @@ export default function Home({ buses }) {
 }
 
 export async function getServerSideProps() {
-  const buses = [];
+  let buses;
+
+  try {
+    const response = await axios({
+      method: "GET",
+      url: "http://localhost:8080/api/buses/top",
+    });
+
+    buses = response.data;
+  } catch {
+    buses = [];
+  }
 
   return {
     props: {

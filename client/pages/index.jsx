@@ -1,14 +1,19 @@
+import { Box } from "@chakra-ui/react";
+import Hero from "../components/Hero";
+
 export default function Home({ buses }) {
   return (
-    <div>
-      <h1>Top 10 bus lines in Stockholm</h1>
-      <p>
-        Busses have become popular in Stockholm since 1919. There are around approximately 500 bus
-        lines. Among those, these are the 10 top bus lines that have the most bus stops on their
-        route.
-      </p>
-      <div>{JSON.stringify({ buses })}</div>
-    </div>
+    <Box>
+      <Hero
+        title={"Top 10 bus lines"}
+        subtitle={"in Stockholm"}
+        description={
+          "Busses have become popular in Stockholm since 1919. There are around approximately 500 bus lines. Among those, these are the 10 top bus lines that have the most bus stops on their route."
+        }
+      />
+
+      <Box>{JSON.stringify({ buses })}</Box>
+    </Box>
   );
 }
 

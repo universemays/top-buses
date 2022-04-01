@@ -1,9 +1,9 @@
 # TopBuses Client
 
-To run the project, firstly, run,
+To run the project, firstly, run this command,
 
 ```sh
 yarn dev
 ```
 
-And visit <http://localhost:3000>
+And visit <http://localhost:3000>.

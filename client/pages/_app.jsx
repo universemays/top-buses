@@ -1,5 +1,5 @@
-import NextNProgress from "nextjs-progressbar";
 import { ChakraProvider } from "@chakra-ui/react";
+import NextNProgress from "nextjs-progressbar";
 
 function MyApp({ Component, pageProps }) {
   return (

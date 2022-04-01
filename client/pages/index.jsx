@@ -36,7 +36,6 @@ export async function getServerSideProps() {
         },
       ],
     },
-
     {
       number: "2",
       stops: [
@@ -47,6 +46,19 @@ export async function getServerSideProps() {
         {
           number: "98766",
           name: "Central Station B",
+        },
+      ],
+    },
+    {
+      number: "3",
+      stops: [
+        {
+          number: "23456",
+          name: "Somewhere A",
+        },
+        {
+          number: "23457",
+          name: "Somewhere B",
         },
       ],
     },

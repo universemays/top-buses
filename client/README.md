@@ -3,6 +3,7 @@
 To run the project, firstly, run this command,
 
 ```sh
+yarn install
 yarn dev
 ```
 

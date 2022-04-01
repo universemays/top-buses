@@ -34,6 +34,7 @@ With another terminal, run the client,
 
 ```sh
 cd client
+yarn install
 yarn dev
 ```
 

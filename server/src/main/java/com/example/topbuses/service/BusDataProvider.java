@@ -1,6 +1,7 @@
 package com.example.topbuses.service;
 
 import com.example.topbuses.model.BusJourneyObject;
+import com.example.topbuses.model.BusStopObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
@@ -17,6 +18,11 @@ public class BusDataProvider {
 
     public BusDataProvider(WebClient apiClient) {
         this.apiClient = apiClient;
+    }
+
+    public Mono<List<BusStopObject>> getBusStops() {
+        ParameterizedTypeReference<Response<BusStopObject>> typeReference = new ParameterizedTypeReference<>() {};
+        return fetch("stops", typeReference);
     }
 
     public Mono<List<BusJourneyObject>> getBusJourneys() {
